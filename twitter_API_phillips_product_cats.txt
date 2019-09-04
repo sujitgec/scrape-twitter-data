@@ -1,0 +1,177 @@
+library(rtweet)
+library(httpuv)
+library(readr)
+library(dplyr)
+
+token <- create_token(app = "TopicModellingResearch", 
+                      consumer_key = "SQV2GPdhj9bbOX4AVjeeTMcF8", 
+                      consumer_secret = "vCxpf4ModwpZtLzh0UPUNFLyKgo8MfaLGIiE3wPwnzX01adQjV", 
+                      access_token = "34324567-k8vtlog4hc3nInULbz0Kl1gVnxqCMlMs9tqe4jSQx", 
+                      access_secret = "YZUbEUTjMGRzB2raQXHSmU3vnoYz4W8XJz03F31pXsp89")
+
+
+
+
+##### HAIR CARE #####
+keywords_hair_care <- c("\"hair care\"", "curler", "\"curling iron\"",  "\"hair curling\"", "\"curling tongs\"", "\"hair roller\"", "\"philips curling\"",
+                        "\"air styler\"", "airstyler", 
+                        "\"hair brush\"", "\"hair brushes\"", "hairbrush", "hairbrushes",
+                        "\"hair dryer\"", "\"blow dryer\"",
+                        "\"straightening brush\"", "\"straightener\"",
+                        "\"multi styler\"", "multistyler")
+system.time(tw_hair_care <- search_tweets(q = paste(keywords_hair_care, collapse = " OR "),
+                                                             n = 100000, 
+                                                             type = "recent",
+                                                             include_rts = FALSE,
+                                                             lang = "en",
+                                                             retryonratelimit = TRUE)
+) # elapsed: 100,000 -> 66.18 secs / 1,000 -> 73.22 secs
+#saveRDS(object = tw_hair_removal, file = "data/twitter/tw_hair_care_20190625.RDS")
+tw_hair_care <- readRDS(file = "data/twitter/tw_hair_care_20190625.RDS")
+
+tw_hair_care %>% 
+  count(source) %>%
+  filter(n > 1) %>%
+  arrange(desc(n)) %>%
+  print(n = 30)
+
+tw_hair_care %>%
+  select(text, source) %>%
+  arrange(source)
+
+  
+##### HAIR REMOVAL #####
+keywords_hair_removal <- c("hair removal", "epilation", "epilator", "epilating", 
+                           "depilation", "depilating", "ipl depilator", "\"intense pulsed light\"", "ipl hair",
+                           "laser depilator", "laser hair removal",
+                           "\"lady shaver\"", "\"ladies shaver\"", "\"women shaver\"", "\"electric shaver woman\"", 
+                           "\"lady trimmer\"", "\"ladies trimmer\"", "\"women trimmer\"",
+                           "\"bikini wax\"", "\"brazilian wax\"", "\"waxing cream\"", "\"waxing products\"", "\"waxing hair\"")
+system.time(tw_hair_removal <- search_tweets(q = paste(keywords_hair_removal, collapse = " OR "),
+                                          n = 100000, 
+                                          type = "recent",
+                                          include_rts = FALSE,
+                                          lang = "en",
+                                          retryonratelimit = TRUE)
+) # elapsed: 25.39  secs
+#saveRDS(object = tw_hair_removal, file = "data/twitter/tw_hair_removal_20190626.RDS")
+tw_hair_removal <- readRDS(file = "data/twitter/tw_hair_removal_20190626.RDS")
+
+tw_hair_removal %>% 
+  count(source) %>%
+  filter(n > 1) %>%
+  arrange(desc(n)) %>%
+  print(n = 30)
+
+
+tw_hair_removal %>%
+  select(text, source) %>%
+  arrange(source) %>%
+  write_excel_csv(path = "temp/tw_hair_removal.csv")
+
+
+##### SKIN CARE #####
+keywords_skin_care <- c("\"skin care\"", "\"skincare\"", "\"facial cream\"")
+system.time(tw_skin_care <- search_tweets(q = paste(keywords_skin_care, collapse = " OR "),
+                                             n = 100000, 
+                                             type = "recent",
+                                             include_rts = FALSE,
+                                             lang = "en",
+                                             retryonratelimit = TRUE)
+) # elapsed: 2165.47 secs
+#saveRDS(object = tw_skin_care, file = "data/twitter/tw_skin_care_20190625.RDS")
+tw_skin_care <- readRDS(file = "data/twitter/tw_skin_care_20190625.RDS")
+
+tw_skin_care %>% 
+  count(source) %>%
+  filter(n > 1) %>%
+  arrange(desc(n)) %>%
+  print(n = 30)
+
+
+tw_skin_care %>%
+  select(text, source) %>%
+  arrange(source) %>%
+  write_excel_csv(path = "temp/tw_skin_care.csv")
+
+
+##### GROOMING #####
+keywords_grooming <- c("\"male grooming\"", "\"beard trimmer\"", "\"beard trimm\"", "\"beard trimming\"", "\"body grooming\"", "\"detail trimmer\"", 
+                        "\"hair clipper\"", "\"hair clippers\"", "\"hair clipping\"", "multigroom")
+system.time(tw_grooming <- search_tweets(q = paste(keywords_grooming, collapse = " OR "),
+                                          n = 100000, 
+                                          type = "recent",
+                                          include_rts = FALSE,
+                                          lang = "en",
+                                          retryonratelimit = TRUE)
+) # elapsed: 9.11 secs
+#saveRDS(object = tw_grooming, file = "data/twitter/tw_grooming_20190625.RDS")
+tw_grooming <- readRDS(file = "data/twitter/tw_grooming_20190625.RDS")
+
+tw_grooming %>% 
+  count(source) %>%
+  filter(n > 1) %>%
+  arrange(desc(n)) %>%
+  print(n = 30)
+
+
+tw_grooming %>%
+  select(text, source) %>%
+  arrange(source) %>%
+  write_excel_csv(path = "temp/tw_grooming.csv")
+
+
+##### ONEBLADE HANDLES + BLADES #####
+keywords_oneblade <- c("oneblade")
+system.time(tw_oneblade <- search_tweets(q = paste(keywords_oneblade, collapse = " OR "),
+                                         n = 100000, 
+                                         type = "recent",
+                                         include_rts = FALSE,
+                                         lang = "en",
+                                         retryonratelimit = TRUE)
+) # elapsed: 1.75  secs
+#saveRDS(object = tw_oneblade, file = "data/twitter/tw_oneblade_20190625.RDS")
+tw_oneblade <- readRDS(file = "data/twitter/tw_oneblade_20190625.RDS")
+
+tw_oneblade %>% 
+  count(source) %>%
+  filter(n > 1) %>%
+  arrange(desc(n)) %>%
+  print(n = 30)
+
+
+tw_oneblade %>%
+  select(text, source) %>%
+  arrange(source) %>%
+  write_excel_csv(path = "temp/tw_oneblade.csv")
+
+
+##### SHAVING #####
+keywords_shaving <- c("\"electric shaver\"", "\"electrical shaver\"", "\"electric shaving\"", "\"electric razor\"", "\"philips shaver\"", 
+                       "\"shaving razor\"", "\"shave razor\"", "\"men's razor\"", "\"men razor\"", "\"razor burn\"", "\"safety razor\"")
+system.time(tw_shaving <- search_tweets(q = paste(keywords_shaving, collapse = " OR "),
+                                         n = 100000, 
+                                         type = "recent",
+                                         include_rts = FALSE,
+                                         lang = "en",
+                                         retryonratelimit = TRUE)
+) # elapsed: 8.91 secs
+#saveRDS(object = tw_shaving, file = "data/twitter/tw_shaving_20190625.RDS")
+tw_shaving <- readRDS(file = "data/twitter/tw_shaving_20190625.RDS")
+
+tw_shaving %>% 
+  count(source) %>%
+  filter(n > 1) %>%
+  arrange(desc(n)) %>%
+  print(n = 30)
+
+
+tw_shaving %>%
+  select(text, source) %>%
+  arrange(source) %>%
+  write_excel_csv(path = "temp/tw_shaving.csv")
+
+
+##### TWITTER USER SOURCE #####
+sources_news <- grep(pattern = "news", x = tw_hair_care$source, ignore.case = TRUE, value = TRUE)
+newslike_sources <- c("Buffer")
